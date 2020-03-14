@@ -1,78 +1,92 @@
 package com.example.transportop;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.BundleCompat;
-
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import android.widget.Toast;
 
-import org.json.JSONObject;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.material.bottomnavigation.BottomNavigationMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-    RequestQueue queue;
 
-    @Override
+public class MainActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener,
+        SignupFragment.OnFragmentInteractionListener {
+
+    BottomNavigationView bottomNavigation;
+
+    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.profileItem:
+                            Toast.makeText(getApplicationContext(), item.getItemId(), Toast.LENGTH_SHORT).show();
+                            return true;
+                        case R.id.settingsItem:
+                            Toast.makeText(getApplicationContext(), item.getItemId(), Toast.LENGTH_SHORT).show();
+                            return true;
+                        case R.id.searchItem:
+                            Toast.makeText(getApplicationContext(), item.getItemId(), Toast.LENGTH_SHORT).show();
+                            return true;
+                        case R.id.home:
+                            onBackPressed();
+                            return true;
+                    }
+                    return false;
+                }
+
+            };
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String database = BuildConfig.Backend;
-        // create the request queue
-        queue = Volley.newRequestQueue(this);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
     }
 
-    public void sendRequest(View view) {
-        final TextView textView = (TextView) findViewById(R.id.HttpView);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //Toast.makeText(getApplicationContext(), item.getItemId(), Toast.LENGTH_SHORT).show();
+                onBackPressed();
+                // Do something here. This is the event fired when up button is pressed.
+                return true;
+        }
 
 
-        String url = BuildConfig.Backend + "/api/user/read.php";
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+
+    public void showNavigationBar() {
+        bottomNavigation.setVisibility(View.VISIBLE);
+    }
+    public void hideNavigationBar() {
+        bottomNavigation.setVisibility(View.GONE);
+    }
 
 
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        textView.setText("Response: " + response.toString());
-                    }
-                }, new Response.ErrorListener() {
+    public void showUpButton() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        textView.setText("Error! Response!");
-                    }
-                });
-
-        //textView.setText(url);
-        // Request a string response from the provided URL.
-        /*
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        textView.setText("Response is: "+ response.substring(0,500));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                textView.setText("That didn't work!");
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-        */
-        queue.add(jsonObjectRequest);
+    public void hideUpButton() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }
