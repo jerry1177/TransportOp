@@ -1,6 +1,8 @@
 package com.example.transportop;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -8,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +32,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -72,6 +77,8 @@ public class SignupFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+
 
     RequestQueue queue;
 
@@ -121,6 +128,7 @@ public class SignupFragment extends Fragment {
         driver     = (RadioButton) getView().findViewById(R.id.DriverButton);
         company    = (EditText) getView().findViewById(R.id.CompanyTextBox);
         signup     = (Button) getView().findViewById(R.id.SignUpButton);
+        takePicture     = (ImageButton) getView().findViewById(R.id.CameraButton);
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +136,17 @@ public class SignupFragment extends Fragment {
                 sendRequest();
             }
         });
+
+        takePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ((MainActivity)getActivity()).dispatchTakePictureIntent();
+            }
+        });
     }
+
+
 
     public void sendRequest() {
         final TextView textView = (TextView) getView().findViewById(R.id.HttpView);
@@ -300,6 +318,12 @@ public class SignupFragment extends Fragment {
         MainActivity main = (MainActivity)getActivity();
         main.showUpButton();
         main.hideNavigationBar();
+
+        // update image
+        if (main.imageUpdated) {
+            profilePic.setImageBitmap(main.imageBitmap);
+            main.imageUpdated = false;
+        }
 
     }
 

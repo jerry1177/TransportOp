@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/profileItem"
+    <item android:id="@+id/homeItem"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="profile"></item>
+        android:title="Home"></item>
 
-    <item android:id="@+id/settingsItem"
+    <item android:id="@+id/middleItem"
     android:icon="@drawable/ic_launcher_foreground"
-    android:title="Settings"></item>
+    android:title="Find Route"></item>
 
-    <item android:id="@+id/searchItem"
+    <item android:id="@+id/addVehicleItem"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="search"></item>
+        android:title="Add Vehicle"></item>
 </menu>
