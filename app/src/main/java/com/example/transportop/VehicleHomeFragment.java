@@ -93,12 +93,14 @@ public class VehicleHomeFragment<OnPause> extends Fragment {
     public void onResume() {
         super.onResume();
         MainActivity main = (MainActivity)getActivity();
-        if (!main.isNavBarShown) {
+        if (!MainActivity.isNavBarShown) {
             main.showNavigationBar();
-            main.isNavBarShown = true;
+            MainActivity.isNavBarShown = true;
         }
 
-        main.currentView = CurrentView.HOME;
+
+        main.getSupportActionBar().setTitle("Dashboard");
+        MainActivity.currentView = CurrentView.HOME;
 
         if (MainActivity.toView == ToView.FINDROUTE)
             Navigation.findNavController(getView()).navigate(VehicleHomeFragmentDirections.actionHomeFragmentToFindRouteFragment());

@@ -1,15 +1,23 @@
 package com.example.transportop;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -101,9 +109,9 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
         setContentView(R.layout.activity_main);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        bottomNavigation.getMenu().close();
-
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -115,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
 
         }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -138,9 +147,12 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
 
     public void showNavigationBar() {
         bottomNavigation.setVisibility(View.VISIBLE);
+        isNavBarShown = true;
     }
     public void hideNavigationBar() {
+
         bottomNavigation.setVisibility(View.GONE);
+        isNavBarShown = false;
     }
 
     public void dispatchTakePictureIntent() {

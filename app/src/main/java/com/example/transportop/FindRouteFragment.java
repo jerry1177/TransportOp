@@ -95,6 +95,7 @@ public class FindRouteFragment extends Fragment {
             main.showNavigationBar();
             MainActivity.isNavBarShown = true;
         }
+        main.getSupportActionBar().setTitle("Find Route");
 
         MainActivity.currentView = CurrentView.FINDROUTE;
         MainActivity.toView = ToView.HOME;

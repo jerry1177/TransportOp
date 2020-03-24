@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c6ddf4"
+    android:background="#faf3dd"
     tools:context=".SignupFragment">
     <ScrollView
         android:layout_width="409dp"
@@ -170,7 +170,9 @@
                 android:layout_marginBottom="24dp"
                 android:layout_weight="1"
                 android:background="@drawable/round_corners_buttons"
-                android:text="Sign Up" />
+                android:fontFamily="@font/rubic_regular"
+                android:text="Sign Up"
+                android:textColor="#ffffff" />
             <Button
                 android:id="@+id/button4"
                 android:layout_width="wrap_content"

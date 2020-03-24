@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginFragment"
-    android:background="#c6ddf4">
+    android:background="#faf3dd">
 
     <!-- TODO: Update blank fragment layout -->
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/LoginImageView"
-        android:layout_width="wrap_content"
+        android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:src="@drawable/transport_logo"
-        android:background="@drawable/rounded_corners_edittext"
+        android:background="@drawable/rounded_corners_imageview"
+        android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -46,13 +46,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/usernameEditText" />
+
     <Button
         android:id="@+id/LoginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="38dp"
-        android:text="Login"
         android:background="@drawable/round_corners_buttons"
+        android:fontFamily="@font/rubic_regular"
+        android:text="Login"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toTopOf="@+id/toSignUpButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,8 +66,10 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="39dp"
-        android:text="Sign Up"
         android:background="@drawable/round_corners_buttons"
+        android:fontFamily="@font/rubic_regular"
+        android:text="Sign Up"
+        android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"

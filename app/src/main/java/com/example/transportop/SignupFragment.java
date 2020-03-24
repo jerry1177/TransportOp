@@ -319,6 +319,8 @@ public class SignupFragment extends Fragment {
         main.showUpButton();
         main.hideNavigationBar();
 
+        main.getSupportActionBar().setTitle("Sign Up");
+
         // update image
         if (main.imageUpdated) {
             profilePic.setImageBitmap(main.imageBitmap);

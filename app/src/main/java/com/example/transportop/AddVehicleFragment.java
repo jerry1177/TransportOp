@@ -98,6 +98,9 @@ public class AddVehicleFragment extends Fragment {
             MainActivity.isNavBarShown = true;
         }
 
+        main.getSupportActionBar().setTitle("Add Vehicle");
+
+
 
         MainActivity.currentView = CurrentView.ADDVEHICLE;
         MainActivity.toView = ToView.HOME;

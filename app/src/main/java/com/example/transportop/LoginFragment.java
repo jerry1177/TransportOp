@@ -94,15 +94,6 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -127,6 +118,8 @@ public class LoginFragment extends Fragment {
         MainActivity main = (MainActivity) getActivity();
         main.hideNavigationBar();
         main.hideUpButton();
+
+        main.getSupportActionBar().setTitle("login");
 
     }
 
