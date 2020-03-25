@@ -4,11 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 
@@ -54,6 +57,8 @@ public class AddVehicleFragment extends Fragment {
         return fragment;
     }
 
+    ListView listView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +74,16 @@ public class AddVehicleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_vehicle, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        listView = (ListView) getView().findViewById(R.id.addVehicleListView);
+
+        DriverListAdapter adapter = new DriverListAdapter(getContext(), R.layout.driver_list_view, VehicleListSingleton.GetSingleton().m_List);
+        listView.setAdapter(adapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

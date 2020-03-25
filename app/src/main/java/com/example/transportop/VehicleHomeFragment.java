@@ -4,13 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.sql.Driver;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -55,6 +63,9 @@ public class VehicleHomeFragment<OnPause> extends Fragment {
         return fragment;
     }
 
+    ArrayList<DriverModel> list;
+    ListView listView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +73,14 @@ public class VehicleHomeFragment<OnPause> extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // get list from singleton
+        list = VehicleListSingleton.GetSingleton().m_List;
+
+        // add vehicles to list
+        list.add(new DriverModel("beasty", "Honda Civic", 29, 12, false));
+        list.add(new DriverModel("biola", "toyota", 25, 15, false));
+        list.add(new DriverModel("uber", "camaro", 15, 25, false));
     }
 
     @Override
@@ -69,6 +88,16 @@ public class VehicleHomeFragment<OnPause> extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_vehicle_home, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        listView = (ListView) getView().findViewById(R.id.homeListView);
+
+        DriverListAdapter adapter = new DriverListAdapter(getContext(), R.layout.driver_list_view, list);
+        listView.setAdapter(adapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -99,6 +128,8 @@ public class VehicleHomeFragment<OnPause> extends Fragment {
         }
 
 
+
+
         main.getSupportActionBar().setTitle("Dashboard");
         MainActivity.currentView = CurrentView.HOME;
 
@@ -107,6 +138,7 @@ public class VehicleHomeFragment<OnPause> extends Fragment {
 
         if (MainActivity.toView == ToView.ADDVEHICLE)
             Navigation.findNavController(getView()).navigate(VehicleHomeFragmentDirections.actionHomeFragmentToAddVehicleFragment());
+
     }
 
 

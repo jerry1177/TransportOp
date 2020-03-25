@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddVehicleFragment"/>
+    tools:context=".AddVehicleFragment">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:clickable="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+
+        android:src="@drawable/pluss_button_image"
+        app:backgroundTint="@color/beige" />
+
+    <ListView
+        android:id="@+id/addVehicleListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"
+        android:padding="8dp"/>
+
+</FrameLayout>

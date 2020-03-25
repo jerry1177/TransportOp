@@ -91,9 +91,12 @@ public class SignupFragment extends Fragment {
     EditText password;
     EditText cPassword;
     EditText company;
-    RadioButton vendor;
-    RadioButton driver;
+    ImageButton vendor;
+    ImageButton driver;
     Button signup;
+
+    boolean isVendor;
+    boolean isDriver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,11 +127,34 @@ public class SignupFragment extends Fragment {
         email      = (EditText) getView().findViewById(R.id.EmailTextBox);
         password   = (EditText) getView().findViewById(R.id.PasswordTextBox);
         cPassword  = (EditText) getView().findViewById(R.id.CPWTextBox);
-        vendor     = (RadioButton) getView().findViewById(R.id.VendorButton);
-        driver     = (RadioButton) getView().findViewById(R.id.DriverButton);
+        vendor     = (ImageButton) getView().findViewById(R.id.VendorButton);
+        driver     = (ImageButton) getView().findViewById(R.id.DriverButton);
         company    = (EditText) getView().findViewById(R.id.CompanyTextBox);
         signup     = (Button) getView().findViewById(R.id.SignUpButton);
         takePicture     = (ImageButton) getView().findViewById(R.id.CameraButton);
+
+        isVendor = false;
+        isDriver = false;
+
+        vendor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isVendor = true;
+                isDriver = false;
+                vendor.setBackground(getResources().getDrawable(R.drawable.rounded_corners_highlighted));
+                driver.setBackground(getResources().getDrawable(R.drawable.round_corners_list_item));
+            }
+        });
+
+        driver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isVendor = false;
+                isDriver = true;
+                vendor.setBackground(getResources().getDrawable(R.drawable.round_corners_list_item));
+                driver.setBackground(getResources().getDrawable(R.drawable.rounded_corners_highlighted));
+            }
+        });
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +193,7 @@ public class SignupFragment extends Fragment {
             Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), "Passwords don't match!", Toast.LENGTH_SHORT).show();
 
             // check to see if user chose a type
-        } else if (!vendor.isChecked() && !driver.isChecked()) {
+        } else if (!isVendor && !isDriver) {
             Toast.makeText(((MainActivity)getActivity()).getApplicationContext(),"Must choose between driver or vendor", Toast.LENGTH_SHORT).show();
 
         }  else {
@@ -196,7 +222,7 @@ public class SignupFragment extends Fragment {
                 params.put("email", email.getText());
                 params.put("password", password.getText());
                 params.put("company", company.getText());
-                if (vendor.isChecked())
+                if (isVendor)
                     params.put("type", "vendor");
                 else
                     params.put("type", "driver");
@@ -241,7 +267,7 @@ public class SignupFragment extends Fragment {
                                     params.put("lastname", lName.getText());
                                     params.put("email", email.getText());
                                     params.put("password", password.getText());
-                                    if (vendor.isChecked())
+                                    if (isVendor)
                                         params.put("type", "vendor");
                                     else
                                         params.put("type", "driver");
@@ -326,6 +352,8 @@ public class SignupFragment extends Fragment {
             profilePic.setImageBitmap(main.imageBitmap);
             main.imageUpdated = false;
         }
+
+
 
     }
 
