@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,34 +15,14 @@ import androidx.navigation.Navigation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-/**
- * enum to keep track of what view is
- * curently being displayed or on top of the stack
- */
-enum CurrentView {
-    HOME,
-    FINDROUTE,
-    ADDVEHICLE
-}
-
-/**
- * enum to keep track of what view
- * the home fragment should navigate to because
- * findroute and addvehicle fragments just pop back to homeview
- */
-enum ToView {
-    HOME,
-    FINDROUTE,
-    ADDVEHICLE
-}
-
 public class MainActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener,
-        SignupFragment.OnFragmentInteractionListener, VehicleHomeFragment.OnFragmentInteractionListener,
-        FindRouteFragment.OnFragmentInteractionListener, AddVehicleFragment.OnFragmentInteractionListener {
+        SignupFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener,
+        FindRouteFragment.OnFragmentInteractionListener, AddFragment.OnFragmentInteractionListener,
+        CreateVehicleFragment.OnFragmentInteractionListener, CreateStationFragment.OnFragmentInteractionListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     static CurrentView currentView;
-    static ToView toView = ToView.HOME;
+    static ToView toView = ToView.LOGIN;
     static boolean imageUpdated = false;
     static Bitmap imageBitmap;
     static boolean isNavBarShown = false;
@@ -57,18 +36,17 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
 
                     View view = getSupportFragmentManager().findFragmentById(R.id.my_nav_host_fragment).getView();
 
-
                     if (item.getItemId() == R.id.homeItem) {
                         if (currentView != CurrentView.HOME) {
                             Navigation.findNavController(view).popBackStack();
                             toView = ToView.HOME;
-                            Toast.makeText(getApplicationContext(), "home", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "home", Toast.LENGTH_SHORT).show();
                         }
                         return true;
                     } else if (item.getItemId() == R.id.middleItem) {
                         if (currentView == CurrentView.HOME) {
-                            Navigation.findNavController(view).navigate(VehicleHomeFragmentDirections.actionHomeFragmentToFindRouteFragment());
-                            Toast.makeText(getApplicationContext(), "find", Toast.LENGTH_SHORT).show();
+                            Navigation.findNavController(view).navigate(HomeFragmentDirections.actionHomeFragmentToFindRouteFragment());
+                            //Toast.makeText(getApplicationContext(), "find", Toast.LENGTH_SHORT).show();
                         }
 
                         if (currentView == CurrentView.ADDVEHICLE) {
@@ -77,9 +55,9 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
                         }
 
                         return true;
-                    } else if ( item.getItemId() == R.id.addVehicleItem) {
+                    } else if ( item.getItemId() == R.id.addItem) {
                         if (currentView == CurrentView.HOME) {
-                            Navigation.findNavController(view).navigate(VehicleHomeFragmentDirections.actionHomeFragmentToAddVehicleFragment());
+                            Navigation.findNavController(view).navigate(HomeFragmentDirections.actionHomeFragmentToAddVehicleFragment());
 
                         }
 
@@ -95,11 +73,27 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
                 }
 
             };
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
+
+        ViewManagerSingleton.GetSingleton().setUserType(UserType.DRIVER);
+
+        DriverSingleton.GetSignleton().m_Driver.SetCompanyName("Beasty");
+        DriverSingleton.GetSignleton().m_Driver.m_VehiclList.add(new VehicleModel("Honda Civic", 29.0f, 12, false));
+        DriverSingleton.GetSignleton().m_Driver.m_VehiclList.add(new VehicleModel("toyota", 25.0f, 15, false));
+        DriverSingleton.GetSignleton().m_Driver.m_VehiclList.add(new VehicleModel("camaro", 15.0f, 25, false));
+
+        VendorSingleton.GetSingleton().m_Vendor.m_StationList.add(new StationModel("La Mirada", 3.30f,3.34f,3.35f,2.78f));
+        VendorSingleton.GetSingleton().m_Vendor.m_StationList.add(new StationModel("Seaside", 3.31f,3.36f,3.37f,3.78f));
+        VendorSingleton.GetSingleton().m_Vendor.m_StationList.add(new StationModel("Monterey", 1.30f,2.34f,5.35f,4.78f));
+
+
+
     }
 
 

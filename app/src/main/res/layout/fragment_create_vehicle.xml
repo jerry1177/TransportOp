@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateVehicleFragment">
+
+    <ScrollView
+        android:id="@+id/createVehicleSRC"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/beige"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:id="@+id/createVehicleImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/driver_selected_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/createVehicleModelEditText"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/rounded_corners_edittext"
+                android:ems="10"
+                android:hint="Vehicle Model"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/createVehicleImageView" />
+
+            <EditText
+                android:id="@+id/createVehicleMPGEditText"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/rounded_corners_edittext"
+                android:ems="10"
+                android:hint="Miles Per Galon"
+                android:inputType="numberDecimal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/createVehicleModelEditText" />
+            <EditText
+                android:id="@+id/createVehicleTankSizeEditText"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/rounded_corners_edittext"
+                android:ems="10"
+                android:hint="Tank Size"
+                android:inputType="numberDecimal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/createVehicleMPGEditText" />
+
+            <CheckBox
+                android:id="@+id/createVehicleIsDieselOnlyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:checked="false"
+                android:fontFamily="@font/rubik_regular"
+                android:text="Is Diesel Only?: "
+                style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
+                android:textColor="@color/colorPrimaryDark" />
+            <Button
+                android:id="@+id/createVehicleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/round_corners_buttons"
+                android:fontFamily="@font/rubik_regular"
+                android:text="Create Vehicle"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

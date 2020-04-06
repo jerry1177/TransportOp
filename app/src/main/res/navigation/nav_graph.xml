@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_signup" />
     <fragment
         android:id="@+id/homeVehicleFragment"
-        android:name="com.example.transportop.VehicleHomeFragment"
+        android:name="com.example.transportop.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_vehicle_home" >
         <action
@@ -41,7 +41,24 @@
         tools:layout="@layout/fragment_find_route" />
     <fragment
         android:id="@+id/addVehicleFragment"
-        android:name="com.example.transportop.AddVehicleFragment"
+        android:name="com.example.transportop.AddFragment"
         android:label="fragment_add_vehicle"
-        tools:layout="@layout/fragment_add_vehicle" />
+        tools:layout="@layout/fragment_add_vehicle" >
+        <action
+            android:id="@+id/action_addVehicleFragment_to_createVehicleFragment"
+            app:destination="@id/createVehicleFragment" />
+        <action
+            android:id="@+id/action_addVehicleFragment_to_createStationFragment"
+            app:destination="@id/createStationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createVehicleFragment"
+        android:name="com.example.transportop.CreateVehicleFragment"
+        android:label="fragment_create_vehicle"
+        tools:layout="@layout/fragment_create_vehicle" />
+    <fragment
+        android:id="@+id/createStationFragment"
+        android:name="com.example.transportop.CreateStationFragment"
+        android:label="fragment_create_station"
+        tools:layout="@layout/fragment_create_station" />
 </navigation>

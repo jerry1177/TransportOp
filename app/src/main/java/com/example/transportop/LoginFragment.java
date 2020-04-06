@@ -13,6 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -39,8 +50,6 @@ public class LoginFragment extends Fragment {
         // Required empty public constructor
     }
 
-    Button loginButton;
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -59,13 +68,26 @@ public class LoginFragment extends Fragment {
         return fragment;
     }
 
+    private RequestQueue queue;
+    private EditText username;
+    private EditText password;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
+
         }
+
+        queue = SingletonRequestQueue.getInstance(((MainActivity)getActivity()).getApplicationContext()).getRequestQueue();
+
+        // request the user
+
+
+
     }
 
     @Override
@@ -78,7 +100,13 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getView().findViewById(R.id.toSignUpButton).setOnClickListener(new View.OnClickListener() {
+        // Link username and password to text boxes
+        username = view.findViewById(R.id.loginUsernameEditText);
+        password = view.findViewById(R.id.loginPasswordEditText);
+
+
+        // Set the signup and login on click listeners
+        view.findViewById(R.id.toSignUpButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //NavDirections action = LoginFragmentDirections.actionLoginToSignupFragment();
@@ -86,12 +114,88 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        getView().findViewById(R.id.LoginButton).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.LoginButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (username.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Make sure all text boxes are filled", Toast.LENGTH_SHORT).show();
+                } else {
+                    //sendRequest();
+                }
                 Navigation.findNavController(v).navigate(LoginFragmentDirections.actionLoginToHomeFragment());
             }
         });
+    }
+
+    private void sendRequest() {
+        // Make post url
+        String url = "http://" + BuildConfig.Backend + "/api/user/login.php";
+
+        // Make post JSON
+        JSONObject params = new JSONObject();
+        try {
+            params.put("username", username.getText());
+            params.put("password", password.getText());
+
+        } catch (JSONException e) {
+            Toast.makeText(getContext(), "JSON OBJECT ERROR", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        // Make JSON request object
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+
+                        try {
+                            // if valid credentials
+                            if(response.getString("message").equals("success")) {
+                                if (response.getString("type").equals("vendor")) {
+                                    ViewManagerSingleton.GetSingleton().setUserType(UserType.VENDOR);
+                                    Vendor vendor = new Vendor();
+                                    vendor.SetUserName(username.getText().toString());
+                                    vendor.SetFirstName(response.getString("fname"));
+                                    vendor.SetLastName(response.getString("lname"));
+                                    vendor.SetEmail(response.getString("email"));
+                                    vendor.SetPassword(password.getText().toString());
+                                    vendor.SetCompanyName(response.getString("company"));
+                                    VendorSingleton.GetSingleton().m_Vendor = vendor;
+                                } else {
+                                    ViewManagerSingleton.GetSingleton().setUserType(UserType.DRIVER);
+                                    Driver driver = new Driver();
+                                    driver.SetUserName(username.getText().toString());
+                                    driver.SetFirstName(response.getString("fname"));
+                                    driver.SetLastName(response.getString("lname"));
+                                    driver.SetEmail(response.getString("email"));
+                                    driver.SetPassword(password.getText().toString());
+                                    driver.SetCompanyName(response.getString("company"));
+                                    DriverSingleton.GetSignleton().m_Driver = driver;
+                                }
+                                Navigation.findNavController(getView()).navigate(LoginFragmentDirections.actionLoginToHomeFragment());
+                            } else {
+                                Toast.makeText(getContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "retrieve JSON OBJECT ERROR", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Toast.makeText(getContext(),error.toString(), Toast.LENGTH_SHORT).show();
+
+                        //Toast.makeText(getContext(), "JSON Request ERROR", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        // Send request
+        queue.add(jsonObjectRequest);
     }
 
     @Override
@@ -115,9 +219,14 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (MainActivity.toView == ToView.HOME)
+            Navigation.findNavController(getView()).navigate(LoginFragmentDirections.actionLoginToHomeFragment());
+
         MainActivity main = (MainActivity) getActivity();
+
         main.hideNavigationBar();
         main.hideUpButton();
+
 
         main.getSupportActionBar().setTitle("login");
 

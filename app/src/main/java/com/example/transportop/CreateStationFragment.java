@@ -4,26 +4,22 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.Toast;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AddVehicleFragment.OnFragmentInteractionListener} interface
+ * {@link CreateStationFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AddVehicleFragment#newInstance} factory method to
+ * Use the {@link CreateStationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddVehicleFragment extends Fragment {
+public class CreateStationFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,7 +31,7 @@ public class AddVehicleFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public AddVehicleFragment() {
+    public CreateStationFragment() {
         // Required empty public constructor
     }
 
@@ -45,19 +41,17 @@ public class AddVehicleFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AddVehicleFragment.
+     * @return A new instance of fragment CreateStationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddVehicleFragment newInstance(String param1, String param2) {
-        AddVehicleFragment fragment = new AddVehicleFragment();
+    public static CreateStationFragment newInstance(String param1, String param2) {
+        CreateStationFragment fragment = new CreateStationFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-
-    ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,24 +60,17 @@ public class AddVehicleFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-    }
 
+        MainActivity main = (MainActivity) getActivity();
+        main.showUpButton();
+        main.hideNavigationBar();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_vehicle, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        listView = (ListView) getView().findViewById(R.id.addVehicleListView);
-
-        DriverListAdapter adapter = new DriverListAdapter(getContext(), R.layout.driver_list_view, VehicleListSingleton.GetSingleton().m_List);
-        listView.setAdapter(adapter);
+        return inflater.inflate(R.layout.fragment_create_station, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -102,24 +89,6 @@ public class AddVehicleFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MainActivity main = (MainActivity)getActivity();
-        if (!MainActivity.isNavBarShown) {
-            main.showNavigationBar();
-            MainActivity.isNavBarShown = true;
-        }
-
-        main.getSupportActionBar().setTitle("Add Vehicle");
-
-
-
-        MainActivity.currentView = CurrentView.ADDVEHICLE;
-        MainActivity.toView = ToView.HOME;
-        //Toast.makeText(getActivity().getApplicationContext(), main.currentView.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

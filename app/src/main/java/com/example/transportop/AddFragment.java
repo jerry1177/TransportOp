@@ -12,24 +12,22 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.sql.Driver;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link VehicleHomeFragment.OnFragmentInteractionListener} interface
+ * {@link AddFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link VehicleHomeFragment#newInstance} factory method to
+ * Use the {@link AddFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VehicleHomeFragment<OnPause> extends Fragment {
+public class AddFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,7 +39,7 @@ public class VehicleHomeFragment<OnPause> extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public VehicleHomeFragment() {
+    public AddFragment() {
         // Required empty public constructor
     }
 
@@ -51,11 +49,11 @@ public class VehicleHomeFragment<OnPause> extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment VehicleHomeFragment.
+     * @return A new instance of fragment AddFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static VehicleHomeFragment newInstance(String param1, String param2) {
-        VehicleHomeFragment fragment = new VehicleHomeFragment();
+    public static AddFragment newInstance(String param1, String param2) {
+        AddFragment fragment = new AddFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,8 +61,11 @@ public class VehicleHomeFragment<OnPause> extends Fragment {
         return fragment;
     }
 
-    ArrayList<DriverModel> list;
     ListView listView;
+    FloatingActionButton fab;
+    ArrayList<VehicleModel> vehicleList;
+    ArrayList<StationModel> stationList;
+    ViewManagerSingleton viewManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,39 +74,56 @@ public class VehicleHomeFragment<OnPause> extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        viewManager = ViewManagerSingleton.GetSingleton();
 
-        // get list from singleton
-        list = VehicleListSingleton.GetSingleton().m_List;
+        if (viewManager.getUserType() == UserType.DRIVER)
+            vehicleList = DriverSingleton.GetSignleton().m_Driver.m_VehiclList;
+        else
+            stationList = VendorSingleton.GetSingleton().m_Vendor.m_StationList;
 
-        // add vehicles to list
-        list.add(new DriverModel("beasty", "Honda Civic", 29, 12, false));
-        list.add(new DriverModel("biola", "toyota", 25, 15, false));
-        list.add(new DriverModel("uber", "camaro", 15, 25, false));
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_vehicle_home, container, false);
+        return inflater.inflate(R.layout.fragment_add_vehicle, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listView = (ListView) getView().findViewById(R.id.homeListView);
+        listView = (ListView) getView().findViewById(R.id.addVehicleListView);
 
-        DriverListAdapter adapter = new DriverListAdapter(getContext(), R.layout.driver_list_view, list);
-        listView.setAdapter(adapter);
-    }
+        DriverListAdapter dAdapter;// = new DriverListAdapter(getContext(), R.layout.driver_list_view, vehicleList);
+        VendorListAdapter vAdapter;
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        if (viewManager.getUserType() == UserType.DRIVER) {
+            dAdapter = new DriverListAdapter(getContext(), R.layout.driver_list_view, vehicleList);
+            listView.setAdapter(dAdapter);
         }
+        else {
+            vAdapter = new VendorListAdapter(getContext(), R.layout.station_list_view, stationList);
+            listView.setAdapter(vAdapter);
+        }
+
+        //listView.setAdapter(dAdapter);
+
+        fab = (FloatingActionButton) getView().findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewManager.getUserType() == UserType.DRIVER)
+                    Navigation.findNavController(getView()).navigate(AddFragmentDirections.actionAddVehicleFragmentToCreateVehicleFragment());
+                else
+                    Navigation.findNavController(getView()).navigate(AddFragmentDirections.actionAddVehicleFragmentToCreateStationFragment());
+            }
+        });
     }
+
+
 
     @Override
     public void onAttach(Context context) {
@@ -127,25 +145,12 @@ public class VehicleHomeFragment<OnPause> extends Fragment {
             MainActivity.isNavBarShown = true;
         }
 
+        main.getSupportActionBar().setTitle("Add Vehicle");
+        main.hideUpButton();
 
-
-
-        main.getSupportActionBar().setTitle("Dashboard");
-        MainActivity.currentView = CurrentView.HOME;
-
-        if (MainActivity.toView == ToView.FINDROUTE)
-            Navigation.findNavController(getView()).navigate(VehicleHomeFragmentDirections.actionHomeFragmentToFindRouteFragment());
-
-        if (MainActivity.toView == ToView.ADDVEHICLE)
-            Navigation.findNavController(getView()).navigate(VehicleHomeFragmentDirections.actionHomeFragmentToAddVehicleFragment());
-
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        //Toast.makeText(getActivity().getApplicationContext(), "paused", Toast.LENGTH_SHORT).show();
+        MainActivity.currentView = CurrentView.ADDVEHICLE;
+        MainActivity.toView = ToView.HOME;
+        //Toast.makeText(getActivity().getApplicationContext(), main.currentView.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

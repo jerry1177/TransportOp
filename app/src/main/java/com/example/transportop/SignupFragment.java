@@ -1,5 +1,6 @@
 package com.example.transportop;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -79,24 +81,23 @@ public class SignupFragment extends Fragment {
     }
 
 
+    private RequestQueue queue;
 
-    RequestQueue queue;
-
-    CircleImageView profilePic;
+    private CircleImageView profilePic;
     ImageButton takePicture;
-    EditText username;
-    EditText fName;
-    EditText lName;
-    EditText email;
-    EditText password;
-    EditText cPassword;
-    EditText company;
-    ImageButton vendor;
-    ImageButton driver;
+    private EditText username;
+    private EditText fName;
+    private EditText lName;
+    private EditText email;
+    private EditText password;
+    private EditText cPassword;
+    private EditText company;
+    private ImageButton vendor;
+    private ImageButton driver;
     Button signup;
 
-    boolean isVendor;
-    boolean isDriver;
+    private boolean isVendor;
+    private boolean isDriver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,17 +122,17 @@ public class SignupFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         profilePic = (CircleImageView) getView().findViewById(R.id.profile_image);
-        username   = (EditText) getView().findViewById(R.id.Username);
-        fName      = (EditText) getView().findViewById(R.id.FNTextBox);
-        lName      = (EditText) getView().findViewById(R.id.LNTextBox);
-        email      = (EditText) getView().findViewById(R.id.EmailTextBox);
-        password   = (EditText) getView().findViewById(R.id.PasswordTextBox);
-        cPassword  = (EditText) getView().findViewById(R.id.CPWTextBox);
-        vendor     = (ImageButton) getView().findViewById(R.id.VendorButton);
-        driver     = (ImageButton) getView().findViewById(R.id.DriverButton);
-        company    = (EditText) getView().findViewById(R.id.CompanyTextBox);
-        signup     = (Button) getView().findViewById(R.id.SignUpButton);
-        takePicture     = (ImageButton) getView().findViewById(R.id.CameraButton);
+        username   = (EditText) view.findViewById(R.id.Username);
+        fName      = (EditText) view.findViewById(R.id.FNTextBox);
+        lName      = (EditText) view.findViewById(R.id.LNTextBox);
+        email      = (EditText) view.findViewById(R.id.EmailTextBox);
+        password   = (EditText) view.findViewById(R.id.PasswordTextBox);
+        cPassword  = (EditText) view.findViewById(R.id.CPWTextBox);
+        vendor     = (ImageButton) view.findViewById(R.id.VendorButton);
+        driver     = (ImageButton) view.findViewById(R.id.DriverButton);
+        company    = (EditText) view.findViewById(R.id.CompanyTextBox);
+        signup     = (Button) view.findViewById(R.id.SignUpButton);
+        takePicture     = (ImageButton) view.findViewById(R.id.CameraButton);
 
         isVendor = false;
         isDriver = false;
@@ -143,6 +144,7 @@ public class SignupFragment extends Fragment {
                 isDriver = false;
                 vendor.setBackground(getResources().getDrawable(R.drawable.rounded_corners_highlighted));
                 driver.setBackground(getResources().getDrawable(R.drawable.round_corners_list_item));
+                company.setHint("Company (Mandatory)");
             }
         });
 
@@ -153,13 +155,7 @@ public class SignupFragment extends Fragment {
                 isDriver = true;
                 vendor.setBackground(getResources().getDrawable(R.drawable.round_corners_list_item));
                 driver.setBackground(getResources().getDrawable(R.drawable.rounded_corners_highlighted));
-            }
-        });
-
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendRequest();
+                company.setHint("Company (Optional)");
             }
         });
 
@@ -168,6 +164,36 @@ public class SignupFragment extends Fragment {
             public void onClick(View v) {
 
                 ((MainActivity)getActivity()).dispatchTakePictureIntent();
+            }
+        });
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //sendRequest();
+                if (fName.getText().toString().isEmpty() || lName.getText().toString().isEmpty() ||
+                        email.getText().toString().isEmpty() || password.getText().toString().isEmpty() ) {
+                    Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), "Make sure all text boxes are filled out!", Toast.LENGTH_SHORT).show();
+
+                    // Check to see if the email has valid syntax
+                } else if (!isEmailValid(email.getText().toString())) {
+                    Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), "Invalid Email!", Toast.LENGTH_SHORT).show();
+                    // check to see if passwords match
+                } else if ( !password.getText().toString().equals(cPassword.getText().toString())) {
+                    Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), "Passwords don't match!", Toast.LENGTH_SHORT).show();
+
+                    // check to see if user chose a type
+                } else if (!isVendor && !isDriver) {
+                    Toast.makeText(((MainActivity)getActivity()).getApplicationContext(),"Must choose between driver or vendor", Toast.LENGTH_SHORT).show();
+
+                    // passed all of the errors
+                }  else {
+                    //sendRequest();
+                    MainActivity.toView = ToView.HOME;
+                    Navigation.findNavController(getView()).popBackStack();
+
+                }
+                //Navigation.findNavController(v).navigate(SignupFragmentDirections.actionSignupFragmentToHomeVehicleFragment());
             }
         });
     }
@@ -180,131 +206,80 @@ public class SignupFragment extends Fragment {
 
         String url = "http://" + BuildConfig.Backend + "/api/user/user.php";
 
-        // check to see if all of the text boxes are filled
-
-        if (fName.getText().toString().isEmpty() || lName.getText().toString().isEmpty() ||
-                email.getText().toString().isEmpty() || password.getText().toString().isEmpty() ) {
-            Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), "Make sure all text boxes are filled out!", Toast.LENGTH_SHORT).show();
-
-        } else if (!isEmailValid(email.getText().toString())) {
-            Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), "Invalid Email!", Toast.LENGTH_SHORT).show();
-            // check to see if passwords match
-        } else if ( !password.getText().toString().equals(cPassword.getText().toString())) {
-            Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), "Passwords don't match!", Toast.LENGTH_SHORT).show();
-
-            // check to see if user chose a type
-        } else if (!isVendor && !isDriver) {
-            Toast.makeText(((MainActivity)getActivity()).getApplicationContext(),"Must choose between driver or vendor", Toast.LENGTH_SHORT).show();
-
-        }  else {
-            Toast.makeText(((MainActivity)getActivity()).getApplicationContext(),"completed error checks", Toast.LENGTH_SHORT).show();
+        JSONObject params = new JSONObject();
+        try {
+            params.put("username", username.getText());
+            params.put("firstname", fName.getText());
+            params.put("lastname", lName.getText());
+            params.put("email", email.getText());
+            params.put("password", password.getText());
+            params.put("company", company.getText());
+            if (isVendor)
+                params.put("type", "vendor");
+            else
+                params.put("type", "driver");
 
 
-            /*
-            // check to see if username is valid
-            JSONObject params = new JSONObject();
-            try {
-                params.put("username", username.getText());
+        } catch (JSONException e) {
+            Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        }
 
-            } catch (JSONException e) {
-                Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-            }
-            */
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
 
-
-
-
-            JSONObject params = new JSONObject();
-            try {
-                params.put("username", username.getText());
-                params.put("firstname", fName.getText());
-                params.put("lastname", lName.getText());
-                params.put("email", email.getText());
-                params.put("password", password.getText());
-                params.put("company", company.getText());
-                if (isVendor)
-                    params.put("type", "vendor");
-                else
-                    params.put("type", "driver");
-
-
-            } catch (JSONException e) {
-                Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-            /*
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-                    textView.setText(response.toString());
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    textView.setText(error.toString());
-                }
-            });
-            */
-
-
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                    (Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-
+                    @Override
+                    public void onResponse(JSONObject response) {
                         try {
-                            // if username is valid
                             if (response.getString("message").equals("success")) {
+                                if (isVendor) {
+                                    Vendor vendor = new Vendor();
+                                    vendor.SetUserName(username.getText().toString());
+                                    vendor.SetFirstName(fName.getText().toString());
+                                    vendor.SetLastName(lName.getText().toString());
+                                    vendor.SetEmail(email.getText().toString());
+                                    vendor.SetPassword(password.getText().toString());
+                                    vendor.SetCompanyName(company.getText().toString());
 
-                                JSONObject params = new JSONObject();
-                                try {
-                                    params.put("username", username.getText());
-                                    params.put("firstname", fName.getText());
-                                    params.put("lastname", lName.getText());
-                                    params.put("email", email.getText());
-                                    params.put("password", password.getText());
-                                    if (isVendor)
-                                        params.put("type", "vendor");
-                                    else
-                                        params.put("type", "driver");
+                                    VendorSingleton.GetSingleton().m_Vendor = vendor;
 
+                                } else {
+                                    // create driver
+                                    Driver driver = new Driver();
+                                    driver.SetUserName(username.getText().toString());
+                                    driver.SetFirstName(fName.getText().toString());
+                                    driver.SetLastName(lName.getText().toString());
+                                    driver.SetEmail(email.getText().toString());
+                                    driver.SetPassword(password.getText().toString());
+                                    driver.SetCompanyName(company.getText().toString());
 
-                                } catch (JSONException e) {
-                                    Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                                    // set singleton driver
+                                    DriverSingleton.GetSignleton().m_Driver = driver;
                                 }
 
+
+
+
+
+                                MainActivity.toView = ToView.HOME;
+                                Navigation.findNavController(getView()).popBackStack();
                             } else {
-                               // Toast.makeText(this,"completed error checks", Toast.LENGTH_SHORT).show();
+                                textView.setText(response.getString("message"));
                             }
                         } catch (JSONException e) {
                             textView.setText(e.toString());
                         }
-                            textView.setText(response.toString());
-
-                        }
+                        textView.setText(response.toString());
+                    }
                     }, new Response.ErrorListener() {
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO: Handle error
-                            textView.setText(error.toString());
-
-
-
-                        }
-                    });
-
-
-
-
-
-
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        textView.setText(error.toString());
+                    }
+                });
             queue.add(jsonObjectRequest);
-        }
+
     }
 
     /**

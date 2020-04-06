@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/homeItem"
+    <item
+        android:id="@+id/homeItem"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="Home"></item>
+        android:title="@string/home" />
 
     <item android:id="@+id/middleItem"
     android:icon="@drawable/ic_launcher_foreground"
-    android:title="Find Route"></item>
+    android:title="@string/find_route"/>
 
-    <item android:id="@+id/addVehicleItem"
+    <item android:id="@+id/addItem"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="Add Vehicle"></item>
+        android:title="@string/add_vehicle"/>
 </menu>

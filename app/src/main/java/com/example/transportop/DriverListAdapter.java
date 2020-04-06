@@ -12,15 +12,15 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class DriverListAdapter extends ArrayAdapter<DriverModel> {
+public class DriverListAdapter extends ArrayAdapter<VehicleModel> {
 
-    ArrayList<DriverModel> list;
+    ArrayList<VehicleModel> list;
 
     Context context;
 
     int resource;
 
-    DriverListAdapter(Context context, int resource, ArrayList<DriverModel> list) {
+    DriverListAdapter(Context context, int resource, ArrayList<VehicleModel> list) {
         super(context, resource, list);
         this.context = context;
         this.resource = resource;
@@ -36,16 +36,16 @@ public class DriverListAdapter extends ArrayAdapter<DriverModel> {
 
         // get the view
         View view = layoutInflater.inflate(resource, null, false);
+
         TextView companyName =  (TextView) view.findViewById(R.id.driverCompanyName);
         TextView modelText =    (TextView) view.findViewById(R.id.modelText);
         TextView mpgText =      (TextView) view.findViewById(R.id.mpgText);
         TextView tankSizeText = (TextView) view.findViewById(R.id.tankSizeText);
         TextView dieselText =   (TextView) view.findViewById(R.id.dieselOnlyText);
 
+        companyName.setText(DriverSingleton.GetSignleton().m_Driver.GetCompanyName());
+        VehicleModel vehicle = list.get(position);
 
-        DriverModel vehicle = list.get(position);
-
-        companyName.setText(vehicle.GetCompanyName());
         modelText.setText(vehicle.GetVehicleModel());
         mpgText.setText("mil/g: " + vehicle.GetMilesPerGalon());
         tankSizeText.setText("Tank Size: " + vehicle.GetTankSize());
@@ -54,7 +54,6 @@ public class DriverListAdapter extends ArrayAdapter<DriverModel> {
         } else {
             dieselText.setText("Diesel Only: No");
         }
-
 
         return view;
     }

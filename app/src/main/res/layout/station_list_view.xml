@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="15dp"
+android:orientation="vertical"
+android:background="@drawable/round_corners_list_item">
+
+<ImageView
+    android:id="@+id/vendorImage"
+    android:layout_width="100dp"
+    android:layout_height="125dp"
+    android:layout_below="@+id/streetAddress"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    app:srcCompat="@drawable/station_image"
+    android:contentDescription="@string/vendor_image_description" />
+<TextView
+    android:id="@+id/streetAddress"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentEnd="true"
+    android:textAlignment="center"
+    android:layout_alignParentTop="true"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="12dp"
+    android:fontFamily="@font/rubik_bold"
+    android:text="@string/default_street_address"
+    android:textColor="@color/fontColor"
+    android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/regPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/streetAddress"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="38dp"
+        android:layout_toEndOf="@+id/vendorImage"
+        android:background="@drawable/round_corners_station_prices"
+        android:fontFamily="@font/rubik_bold"
+        android:text="@string/default_station_price"
+        android:textAlignment="center"
+        android:textColor="@color/fontColor"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/regPriceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/regPrice"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/vendorImage"
+        android:fontFamily="@font/rubik_bold"
+        android:text="@string/reg_price_text"
+        android:textAlignment="center"
+        android:textColor="@color/fontColor"
+        android:textSize="18sp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"/>
+
+    <TextView
+        android:id="@+id/midPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/streetAddress"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="38dp"
+        android:layout_toEndOf="@+id/regPrice"
+        android:background="@drawable/round_corners_station_prices"
+        android:fontFamily="@font/rubik_bold"
+        android:text="@string/default_station_price"
+        android:textAlignment="center"
+        android:textColor="@color/fontColor"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/midPriceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/regPrice"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/regPriceText"
+        android:fontFamily="@font/rubik_bold"
+        android:text="@string/mid_price_text"
+        android:textAlignment="center"
+        android:textColor="@color/fontColor"
+        android:textSize="18sp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"/>
+
+    <TextView
+        android:id="@+id/premPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/streetAddress"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="38dp"
+        android:layout_toEndOf="@+id/midPrice"
+        android:background="@drawable/round_corners_station_prices"
+        android:fontFamily="@font/rubik_bold"
+        android:text="@string/default_station_price"
+        android:textAlignment="center"
+        android:textColor="@color/fontColor"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/premPriceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/regPrice"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/midPriceText"
+        android:fontFamily="@font/rubik_bold"
+        android:text="@string/prem_price_text"
+        android:textAlignment="center"
+        android:textColor="@color/fontColor"
+        android:textSize="18sp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"/>
+
+    <TextView
+        android:id="@+id/dieselPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/streetAddress"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="38dp"
+        android:layout_toEndOf="@+id/premPrice"
+        android:background="@drawable/round_corners_station_prices"
+        android:fontFamily="@font/rubik_bold"
+        android:text="@string/default_station_price"
+        android:textAlignment="center"
+        android:textColor="@color/fontColor"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/dieselPriceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/regPrice"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/premPriceText"
+        android:fontFamily="@font/rubik_bold"
+        android:text="@string/diesel_price_text"
+        android:textAlignment="center"
+        android:textColor="@color/fontColor"
+        android:textSize="18sp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"/>
+
+</RelativeLayout>

@@ -9,7 +9,7 @@
     tools:context=".SignupFragment">
 
     <ScrollView
-        android:id="@+id/src"
+        android:id="@+id/createVehicleSRC"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/beige"
@@ -138,8 +138,8 @@
                 android:layout_marginBottom="24dp"
                 android:background="@drawable/rounded_corners_edittext"
                 android:ems="10"
-                android:hint="Company (optional)"
-                android:inputType="textPassword"
+                android:hint="Company (Optional)"
+                android:inputType="textPersonName"
                 android:maxLength="40" />
 
             <LinearLayout

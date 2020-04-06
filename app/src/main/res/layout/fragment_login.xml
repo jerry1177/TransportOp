@@ -22,7 +22,7 @@
 
 
     <EditText
-        android:id="@+id/usernameEditText"
+        android:id="@+id/loginUsernameEditText"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:layout_marginTop="32dp"
@@ -45,7 +45,7 @@
         android:background="@drawable/rounded_corners_edittext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/loginUsernameEditText" />
 
     <Button
         android:id="@+id/LoginButton"
