@@ -67,7 +67,7 @@
                 android:background="@drawable/rounded_corners_edittext"
                 android:ems="10"
                 android:hint="Tank Size"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/createVehicleMPGEditText" />

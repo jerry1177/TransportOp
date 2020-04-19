@@ -188,16 +188,15 @@ public class SignupFragment extends Fragment {
 
                     // passed all of the errors
                 }  else {
-                    //sendRequest();
-                    MainActivity.toView = ToView.HOME;
-                    Navigation.findNavController(getView()).popBackStack();
+                    sendRequest();
+                    //MainActivity.toView = ToView.HOME;
+                    //Navigation.findNavController(getView()).popBackStack();
 
                 }
                 //Navigation.findNavController(v).navigate(SignupFragmentDirections.actionSignupFragmentToHomeVehicleFragment());
             }
         });
     }
-
 
 
     public void sendRequest() {

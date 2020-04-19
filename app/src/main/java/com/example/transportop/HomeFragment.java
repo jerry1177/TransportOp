@@ -13,6 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -64,6 +74,9 @@ public class HomeFragment<OnPause> extends Fragment {
     ListView listView;
     ViewManagerSingleton viewManager;
 
+    DriverListAdapter dAdapter;
+    VendorListAdapter vAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,20 +88,19 @@ public class HomeFragment<OnPause> extends Fragment {
         viewManager = ViewManagerSingleton.GetSingleton();
         // Get user list
 
-        /*
+        //*
         // Make post url
-        String url = "http://" + BuildConfig.Backend + "/api/user/login.php";
+
         JSONObject params = new JSONObject();
         JsonObjectRequest jsonObjectRequest;
 
 
         if (viewManager.getUserType() == UserType.DRIVER) {
+            String url = "http://" + BuildConfig.Backend + "/api/vehicle/read_all.php";
             vehicleList = DriverSingleton.GetSignleton().m_Driver.m_VehiclList;
             // Make post JSON
             try {
                 params.put("username", DriverSingleton.GetSignleton().m_Driver.GetUserName());
-                params.put("type", "driver");
-
             } catch (JSONException e) {
                 //Toast.makeText(getContext(), "JSON OBJECT ERROR", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
@@ -110,15 +122,17 @@ public class HomeFragment<OnPause> extends Fragment {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         VehicleModel vehicleModel = new VehicleModel();
                                         object = jsonArray.getJSONObject(i);
-                                        vehicleModel.SetVehicleModel(object.getString("model"));
+                                        vehicleModel.SetVehicleModel(object.getString("name"));
                                         vehicleModel.SetMilesPerGalon(((float)object.getDouble("mpg")));
-                                        if (object.getString("dieselOnlye").equals("yes"))
+                                        if (object.getString("dieselOnly").equals("1"))
                                             vehicleModel.SetIsDieselOnly(true);
                                         else
                                             vehicleModel.SetIsDieselOnly(false);
+
                                         vehicleModel.SetTankSize(object.getInt("tankSize"));
                                         vehicleList.add(vehicleModel);
                                     }
+                                    dAdapter.notifyDataSetChanged();
 
                                 } else {
                                     Toast.makeText(getContext(), "could not obtain list", Toast.LENGTH_SHORT).show();
@@ -141,15 +155,15 @@ public class HomeFragment<OnPause> extends Fragment {
                     });
 
         }
-        /*
+        //*
         else {
+            String url = "http://" + BuildConfig.Backend + "/api/station/read_all.php";
             stationList = VendorSingleton.GetSingleton().m_Vendor.m_StationList;
 
 
             // Make post JSON
             try {
                 params.put("username", VendorSingleton.GetSingleton().m_Vendor.GetUserName());
-                params.put("type", "vendor");
 
             } catch (JSONException e) {
                 //Toast.makeText(getContext(), "JSON OBJECT ERROR", Toast.LENGTH_SHORT).show();
@@ -172,11 +186,16 @@ public class HomeFragment<OnPause> extends Fragment {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         StationModel stationModel = new StationModel();
                                         object = jsonArray.getJSONObject(i);
-                                        stationModel.SetCompanyName(VendorSingleton.GetSingleton().m_Vendor.GetCompanyName());
-                                        stationModel.SetAddress();
-                                        vehicleList.add(vehicleModel);
-                                    }
+                                        //stationModel.SetCompanyName(VendorSingleton.GetSingleton().m_Vendor.GetCompanyName());
 
+                                        stationModel.SetAddress(object.getString("address"));
+                                        stationModel.SetRegPrice(Float.parseFloat(object.getString("reg")));
+                                        stationModel.SetMidPrice(Float.parseFloat(object.getString("med")));
+                                        stationModel.SetPremPrice(Float.parseFloat(object.getString("prem")));
+                                        stationModel.SetDieselPrice(Float.parseFloat(object.getString("diesel")));
+                                        stationList.add(stationModel);
+                                    }
+                                    vAdapter.notifyDataSetChanged();
                                 } else {
                                     Toast.makeText(getContext(), "could not obtain list", Toast.LENGTH_SHORT).show();
                                 }
@@ -198,14 +217,17 @@ public class HomeFragment<OnPause> extends Fragment {
                     });
         }
 
-             */
+          //   */
+
+        SingletonRequestQueue.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
 
 
+        /*
         if (viewManager.getUserType() == UserType.DRIVER)
             vehicleList = DriverSingleton.GetSignleton().m_Driver.m_VehiclList;
         else
             stationList = VendorSingleton.GetSingleton().m_Vendor.m_StationList;
-
+         */
         }
 
     @Override
@@ -221,10 +243,7 @@ public class HomeFragment<OnPause> extends Fragment {
 
         listView = (ListView) getView().findViewById(R.id.homeListView);
 
-        DriverListAdapter dAdapter; //= new DriverListAdapter(getContext(), R.layout.station_list_view, vehicleList);
-        //listView.setAdapter(dAdapter);
-        VendorListAdapter vAdapter;
-        //listView.setAdapter(vAdapter);
+
 
         if (viewManager.getUserType() == UserType.DRIVER) {
             dAdapter = new DriverListAdapter(getContext(), R.layout.driver_list_view, vehicleList);

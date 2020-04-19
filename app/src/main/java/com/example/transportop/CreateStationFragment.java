@@ -4,11 +4,26 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 /**
@@ -53,6 +68,13 @@ public class CreateStationFragment extends Fragment {
         return fragment;
     }
 
+    EditText address;
+    EditText regPrice;
+    EditText midPrice;
+    EditText premPrice;
+    EditText dieselPrice;
+    Button createStation;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +86,7 @@ public class CreateStationFragment extends Fragment {
         MainActivity main = (MainActivity) getActivity();
         main.showUpButton();
         main.hideNavigationBar();
+        main.getSupportActionBar().setTitle("Create Station");
     }
 
     @Override
@@ -78,6 +101,81 @@ public class CreateStationFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        address = (EditText) view.findViewById(R.id.createStationAddressEditText);
+        regPrice = (EditText) view.findViewById(R.id.createStationRegPriceEditText);
+        midPrice = (EditText) view.findViewById(R.id.createStationMidPriceEditText);
+        premPrice = (EditText) view.findViewById(R.id.createStationPremPriceEditText);
+        dieselPrice = (EditText) view.findViewById(R.id.createStationDieselPriceEditText);
+        createStation = (Button) view.findViewById(R.id.createStationButton);
+
+        createStation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "http://" + BuildConfig.Backend + "";
+                StationModel stationModel = new StationModel();
+                stationModel.SetAddress(address.getText().toString());
+                stationModel.SetRegPrice(Float.parseFloat(regPrice.getText().toString()));
+                stationModel.SetMidPrice(Float.parseFloat(midPrice.getText().toString()));
+                stationModel.SetPremPrice(Float.parseFloat(premPrice.getText().toString()));
+                stationModel.SetDieselPrice(Float.parseFloat(dieselPrice.getText().toString()));
+                VendorSingleton.GetSingleton().m_Vendor.m_StationList.add(stationModel);
+                //sendRequest(stationModel, getContext(), url);
+
+                getActivity().onBackPressed();
+            }
+        });
+    }
+
+    private void sendRequest(final StationModel stationModel, final Context context, String url) {
+
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("address", stationModel.GetAddress());
+            params.put("regPrice", stationModel.GetRegPrice());
+            params.put("midPrice", stationModel.GetMidPrice());
+            params.put("premPrice", stationModel.GetPremPrice());
+            params.put("dieselPrice", stationModel.GetDieselPrice());
+        } catch (JSONException e){
+            Toast.makeText(context,e.toString(),Toast.LENGTH_SHORT).show();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("message").equals("success")) {
+                                Toast.makeText(getContext(), "successfully created vehicle!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // if the request failed, we need to delete the last item on
+                                // the list that we added before we sent the request
+                                
+                                ArrayList<StationModel> list = VendorSingleton.GetSingleton().m_Vendor.m_StationList;
+                                list.remove(list.size()-1);
+                                Toast.makeText(getContext(), "Sorry, couldn't make station", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            Toast.makeText(getContext(), e.toString(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Toast.makeText(getContext(),error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     @Override

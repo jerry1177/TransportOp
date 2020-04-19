@@ -107,23 +107,24 @@ public class CreateVehicleFragment extends Fragment {
                     Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), "Make Sure All Textboxs Are Completed!", Toast.LENGTH_SHORT).show();
                 } else {
                     // Make post url
-                    String url = "http://" + BuildConfig.Backend + "";
+                    String url = "http://" + BuildConfig.Backend + "/api/vehicle/vehicle.php";
 
                     // create vehicle
                     VehicleModel vehicleModel = new VehicleModel();
                     vehicleModel.SetVehicleModel(CreateVehicleFragment.this.vehicleModel.getText().toString());
                     vehicleModel.SetMilesPerGalon(Float.parseFloat(mpg.getText().toString()));
-                    vehicleModel.SetTankSize(Integer.parseInt(tankSize.getText().toString()));
+                    vehicleModel.SetTankSize(((int)Float.parseFloat(tankSize.getText().toString())));
                     vehicleModel.SetIsDieselOnly(isDieselButton.isChecked());
                     // add vehicle to vehicle list
                     DriverSingleton.GetSignleton().m_Driver.m_VehiclList.add(vehicleModel);
 
                     // update database
-                    /*
+                    //*
 
                     JSONObject params = new JSONObject();
                     try {
-                        params.put("model", vehicleModel.GetVehicleModel());
+                        params.put("username", DriverSingleton.GetSignleton().m_Driver.GetUserName());
+                        params.put("name", vehicleModel.GetVehicleModel());
                         params.put("mpg", vehicleModel.GetMilesPerGalon());
                         params.put("tankSize", vehicleModel.GetTankSize());
                         if (vehicleModel.IsDieselOnly())
@@ -143,8 +144,10 @@ public class CreateVehicleFragment extends Fragment {
                                 public void onResponse(JSONObject response) {
 
                                     try {
-                                        if (response.getString("message").equals("succes")) {
-                                            getActivity().onBackPressed();
+                                        if (response.getString("message").equals("success")) {
+                                            ((MainActivity)getActivity()).onBackPressed();
+                                        } else {
+                                            Toast.makeText(getContext(), response.getString("message"), Toast.LENGTH_SHORT).show();
                                         }
                                     } catch (JSONException e) {
                                         Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
@@ -165,9 +168,11 @@ public class CreateVehicleFragment extends Fragment {
                                     //Toast.makeText(getContext(), "JSON Request ERROR", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                     */
+                    SingletonRequestQueue.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
 
-                    getActivity().onBackPressed();
+                     //*/
+
+                    //getActivity().onBackPressed();
                 }
             }
         });

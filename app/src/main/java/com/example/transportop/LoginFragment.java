@@ -120,9 +120,9 @@ public class LoginFragment extends Fragment {
                 if (username.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
                     Toast.makeText(getContext(), "Make sure all text boxes are filled", Toast.LENGTH_SHORT).show();
                 } else {
-                    //sendRequest();
+                    sendRequest();
                 }
-                Navigation.findNavController(v).navigate(LoginFragmentDirections.actionLoginToHomeFragment());
+                //Navigation.findNavController(v).navigate(LoginFragmentDirections.actionLoginToHomeFragment());
             }
         });
     }
@@ -214,6 +214,7 @@ public class LoginFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
     }
 
     @Override
@@ -230,6 +231,13 @@ public class LoginFragment extends Fragment {
 
         main.getSupportActionBar().setTitle("login");
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        username.setText("");
+        password.setText("");
     }
 
     /**

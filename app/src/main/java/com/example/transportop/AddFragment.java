@@ -145,7 +145,11 @@ public class AddFragment extends Fragment {
             MainActivity.isNavBarShown = true;
         }
 
-        main.getSupportActionBar().setTitle("Add Vehicle");
+        if (viewManager.getUserType() == UserType.DRIVER)
+            main.getSupportActionBar().setTitle("Add Vehicle");
+        else
+            main.getSupportActionBar().setTitle("Add Station");
+
         main.hideUpButton();
 
         MainActivity.currentView = CurrentView.ADDVEHICLE;
