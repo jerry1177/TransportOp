@@ -30,7 +30,6 @@ enum ToView {
     ADDSTATION,
     CREATESTATION
 }
-
 /**
  * enum to keep track of what type the current user is
  */
@@ -39,6 +38,7 @@ enum UserType {
     DRIVER,
     VENDOR
 }
+
 
 public class ViewManagerSingleton {
     private static ViewManagerSingleton m_Singleton = null;

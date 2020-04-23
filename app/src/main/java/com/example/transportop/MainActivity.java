@@ -18,7 +18,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener,
         SignupFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener,
         FindRouteFragment.OnFragmentInteractionListener, AddFragment.OnFragmentInteractionListener,
-        CreateVehicleFragment.OnFragmentInteractionListener, CreateStationFragment.OnFragmentInteractionListener {
+        CreateVehicleFragment.OnFragmentInteractionListener, CreateStationFragment.OnFragmentInteractionListener,
+        RouteResultFragment.OnFragmentInteractionListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     static CurrentView currentView;

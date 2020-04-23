@@ -38,7 +38,12 @@
         android:id="@+id/findRouteFragment"
         android:name="com.example.transportop.FindRouteFragment"
         android:label="fragment_find_route"
-        tools:layout="@layout/fragment_find_route" />
+        tools:layout="@layout/fragment_find_route" >
+
+        <action
+            android:id="@+id/action_findRouteFragment_to_routeResultsFragment"
+            app:destination="@id/routeResultsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addVehicleFragment"
         android:name="com.example.transportop.AddFragment"
@@ -61,4 +66,10 @@
         android:name="com.example.transportop.CreateStationFragment"
         android:label="fragment_create_station"
         tools:layout="@layout/fragment_create_station" />
+    <fragment
+        android:id="@+id/routeResultsFragment"
+        android:name="com.example.transportop.RouteResultFragment"
+        android:label="fragment_route_result"
+        tools:layout="@layout/fragment_route_result" />
+
 </navigation>

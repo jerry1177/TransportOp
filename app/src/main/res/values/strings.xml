@@ -29,4 +29,12 @@
     <string name="prem_price_text">Prem</string>
     <string name="diesel_price_text">Diesel</string>
 
+    <!-- Strings for find_route_view -->
+    <string-array name="prices">
+        <item>reg</item>
+        <item>mid</item>
+        <item>prem</item>
+        <item>diesel</item>
+    </string-array>
+
 </resources>
