@@ -1,5 +1,6 @@
 package com.example.transportop;
 
+// base class for vendor and driver classes
 public class User {
     private String m_UserName;
     private String m_FName;

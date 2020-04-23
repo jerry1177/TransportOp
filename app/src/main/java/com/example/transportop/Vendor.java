@@ -18,15 +18,6 @@ public class Vendor extends User{
         m_CompanyName = companyName;
     }
 
-    /*
-    public static synchronized Vendor GetVendor() {
-        if (m_Vendor == null)
-            m_Vendor = new Vendor();
-        return m_Vendor;
-    }
-
-     */
-
     public void SetCompanyName(String companyName) { this.m_CompanyName = companyName; }
     public String GetCompanyName() { return this.m_CompanyName; }
 }

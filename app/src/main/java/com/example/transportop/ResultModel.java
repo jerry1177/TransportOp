@@ -1,5 +1,10 @@
 package com.example.transportop;
 
+/**
+ * This class just holds the results that you
+ * want to display to the user after you get
+ * the list of stations to stop at
+ */
 public class ResultModel {
     private String streetAddres;
     private String price;

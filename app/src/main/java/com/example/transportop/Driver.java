@@ -2,6 +2,10 @@ package com.example.transportop;
 
 import java.util.ArrayList;
 
+/**
+ * This class stores the driver user information
+ */
+
 public class Driver extends User {
 
     private static Driver m_Driver = null;
@@ -25,16 +29,6 @@ public class Driver extends User {
         m_CompanyName = companyName;
         m_VehiclList = new ArrayList<>();
     }
-
-    /*
-    public static synchronized Driver GetDriver() {
-        if (m_Driver == null)
-            m_Driver = new Driver();
-
-        return m_Driver;
-    }
-
-     */
 
     public void SetCompanyName(String companyName) { this.m_CompanyName = companyName; }
     public String GetCompanyName() { return this.m_CompanyName; }

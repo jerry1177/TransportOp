@@ -1,9 +1,6 @@
 package com.example.transportop;
 
-import android.app.DownloadManager;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,15 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,9 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.app.Activity.RESULT_OK;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -189,11 +180,7 @@ public class SignupFragment extends Fragment {
                     // passed all of the errors
                 }  else {
                     sendRequest();
-                    //MainActivity.toView = ToView.HOME;
-                    //Navigation.findNavController(getView()).popBackStack();
-
                 }
-                //Navigation.findNavController(v).navigate(SignupFragmentDirections.actionSignupFragmentToHomeVehicleFragment());
             }
         });
     }
@@ -254,10 +241,6 @@ public class SignupFragment extends Fragment {
                                     // set singleton driver
                                     DriverSingleton.GetSignleton().m_Driver = driver;
                                 }
-
-
-
-
 
                                 MainActivity.toView = ToView.HOME;
                                 Navigation.findNavController(getView()).popBackStack();
@@ -326,9 +309,6 @@ public class SignupFragment extends Fragment {
             profilePic.setImageBitmap(main.imageBitmap);
             main.imageUpdated = false;
         }
-
-
-
     }
 
 

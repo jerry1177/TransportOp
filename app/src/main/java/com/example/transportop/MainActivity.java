@@ -14,7 +14,6 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-
 public class MainActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener,
         SignupFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener,
         FindRouteFragment.OnFragmentInteractionListener, AddFragment.OnFragmentInteractionListener,
@@ -29,7 +28,9 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
     static boolean isNavBarShown = false;
 
     BottomNavigationView bottomNavigation;
-
+    /**
+     * This is were the logic happens for the bottom view navigation
+     */
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -41,13 +42,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
                         if (currentView != CurrentView.HOME) {
                             Navigation.findNavController(view).popBackStack();
                             toView = ToView.HOME;
-                            //Toast.makeText(getApplicationContext(), "home", Toast.LENGTH_SHORT).show();
                         }
                         return true;
                     } else if (item.getItemId() == R.id.middleItem) {
                         if (currentView == CurrentView.HOME) {
                             Navigation.findNavController(view).navigate(HomeFragmentDirections.actionHomeFragmentToFindRouteFragment());
-                            //Toast.makeText(getApplicationContext(), "find", Toast.LENGTH_SHORT).show();
                         }
 
                         if (currentView == CurrentView.ADDVEHICLE) {
@@ -82,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
 
+        // This is just code for offline testing
+        /*
         ViewManagerSingleton.GetSingleton().setUserType(UserType.DRIVER);
 
         DriverSingleton.GetSignleton().m_Driver.SetCompanyName("Beasty");
@@ -92,12 +93,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
         VendorSingleton.GetSingleton().m_Vendor.m_StationList.add(new StationModel("La Mirada", 3.30f,3.34f,3.35f,2.78f));
         VendorSingleton.GetSingleton().m_Vendor.m_StationList.add(new StationModel("Seaside", 3.31f,3.36f,3.37f,3.78f));
         VendorSingleton.GetSingleton().m_Vendor.m_StationList.add(new StationModel("Monterey", 1.30f,2.34f,5.35f,4.78f));
-
-
-
+         */
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -113,16 +110,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Do something here. This is the event fired when up button is pressed.
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                //Toast.makeText(getApplicationContext(), item.getItemId(), Toast.LENGTH_SHORT).show();
                 onBackPressed();
-                // Do something here. This is the event fired when up button is pressed.
                 return true;
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -148,10 +142,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
         }
     }
 
+    // The up button is the back arrow on the action bar
     public void showUpButton() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
     public void hideUpButton() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }

@@ -39,6 +39,11 @@ enum UserType {
     VENDOR
 }
 
+/**
+ * This is the class that keeps track of what view
+ * the user is on and what should be displayed
+ * based on the type of user that is logged in
+ */
 
 public class ViewManagerSingleton {
     private static ViewManagerSingleton m_Singleton = null;

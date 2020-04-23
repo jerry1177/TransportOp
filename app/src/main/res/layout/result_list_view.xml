@@ -94,7 +94,4 @@
         android:textSize="18sp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"/>
-
-
-
 </RelativeLayout>

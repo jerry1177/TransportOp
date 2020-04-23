@@ -37,15 +37,18 @@ public class DriverListAdapter extends ArrayAdapter<VehicleModel> {
         // get the view
         View view = layoutInflater.inflate(resource, null, false);
 
+        // get textviews from view
         TextView companyName =  (TextView) view.findViewById(R.id.driverCompanyName);
         TextView modelText =    (TextView) view.findViewById(R.id.modelText);
         TextView mpgText =      (TextView) view.findViewById(R.id.mpgText);
         TextView tankSizeText = (TextView) view.findViewById(R.id.tankSizeText);
         TextView dieselText =   (TextView) view.findViewById(R.id.dieselOnlyText);
 
-        companyName.setText(DriverSingleton.GetSignleton().m_Driver.GetCompanyName());
+        // get vehicle from list
         VehicleModel vehicle = list.get(position);
 
+        // set values on text views
+        companyName.setText(DriverSingleton.GetSignleton().m_Driver.GetCompanyName());
         modelText.setText(vehicle.GetVehicleModel());
         mpgText.setText("mil/g: " + vehicle.GetMilesPerGalon());
         tankSizeText.setText("Tank Size: " + vehicle.GetTankSize());

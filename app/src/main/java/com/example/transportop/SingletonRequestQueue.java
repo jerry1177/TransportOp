@@ -9,6 +9,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+
+/**
+ * This is the class that handles all of the post
+ * and http requests
+ * Make sure to red android documentation to know how to use it!
+ */
 public class SingletonRequestQueue {
 
 

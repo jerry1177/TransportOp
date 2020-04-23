@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -215,7 +214,6 @@ public class FindRouteFragment extends Fragment implements AdapterView.OnItemSel
                             }
                         } catch (JSONException e) {
                             Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                            //Toast.makeText(getContext(), "retrieve JSON OBJECT ERROR", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -225,8 +223,6 @@ public class FindRouteFragment extends Fragment implements AdapterView.OnItemSel
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
                         Toast.makeText(getContext(),error.toString(), Toast.LENGTH_SHORT).show();
-
-                        //Toast.makeText(getContext(), "JSON Request ERROR", Toast.LENGTH_SHORT).show();
                     }
                 });
         SingletonRequestQueue.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
@@ -268,7 +264,6 @@ public class FindRouteFragment extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         price = parent.getItemAtPosition(position).toString();
-        //Toast.makeText(getContext(), price, Toast.LENGTH_SHORT).show();
     }
 
     @Override

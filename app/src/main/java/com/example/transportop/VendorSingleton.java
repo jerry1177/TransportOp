@@ -16,5 +16,4 @@ public class VendorSingleton {
         }
         return m_Singleton;
     }
-
 }

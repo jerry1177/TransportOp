@@ -12,7 +12,6 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -83,11 +82,6 @@ public class LoginFragment extends Fragment {
         }
 
         queue = SingletonRequestQueue.getInstance(((MainActivity)getActivity()).getApplicationContext()).getRequestQueue();
-
-        // request the user
-
-
-
     }
 
     @Override
@@ -109,11 +103,11 @@ public class LoginFragment extends Fragment {
         view.findViewById(R.id.toSignUpButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //NavDirections action = LoginFragmentDirections.actionLoginToSignupFragment();
                 Navigation.findNavController(v).navigate(LoginFragmentDirections.actionLoginToSignupFragment());
             }
         });
 
+        // perform action when login button is tapped
         view.findViewById(R.id.LoginButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +116,6 @@ public class LoginFragment extends Fragment {
                 } else {
                     sendRequest();
                 }
-                //Navigation.findNavController(v).navigate(LoginFragmentDirections.actionLoginToHomeFragment());
             }
         });
     }
@@ -136,7 +129,6 @@ public class LoginFragment extends Fragment {
         try {
             params.put("username", username.getText());
             params.put("password", password.getText());
-
         } catch (JSONException e) {
             Toast.makeText(getContext(), "JSON OBJECT ERROR", Toast.LENGTH_SHORT).show();
             Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
@@ -148,11 +140,10 @@ public class LoginFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONObject response) {
-
-
                         try {
                             // if valid credentials
                             if(response.getString("message").equals("success")) {
+                                // check the user type
                                 if (response.getString("type").equals("vendor")) {
                                     ViewManagerSingleton.GetSingleton().setUserType(UserType.VENDOR);
                                     Vendor vendor = new Vendor();
@@ -179,8 +170,7 @@ public class LoginFragment extends Fragment {
                                 Toast.makeText(getContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
-                            //Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getContext(), "retrieve JSON OBJECT ERROR", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -190,8 +180,6 @@ public class LoginFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
                         Toast.makeText(getContext(),error.toString(), Toast.LENGTH_SHORT).show();
-
-                        //Toast.makeText(getContext(), "JSON Request ERROR", Toast.LENGTH_SHORT).show();
                     }
                 });
         // Send request
@@ -220,15 +208,14 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         if (MainActivity.toView == ToView.HOME)
             Navigation.findNavController(getView()).navigate(LoginFragmentDirections.actionLoginToHomeFragment());
 
         MainActivity main = (MainActivity) getActivity();
-
         main.hideNavigationBar();
         main.hideUpButton();
-
-
+        // change the page title to login
         main.getSupportActionBar().setTitle("login");
 
     }

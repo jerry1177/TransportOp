@@ -26,7 +26,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -86,14 +85,11 @@ public class HomeFragment<OnPause> extends Fragment {
         }
 
         viewManager = ViewManagerSingleton.GetSingleton();
-        // Get user list
 
         //*
         // Make post url
-
         JSONObject params = new JSONObject();
         JsonObjectRequest jsonObjectRequest;
-
 
         if (viewManager.getUserType() == UserType.DRIVER) {
             String url = "http://" + BuildConfig.Backend + "/api/vehicle/read_all.php";
@@ -102,7 +98,6 @@ public class HomeFragment<OnPause> extends Fragment {
             try {
                 params.put("username", DriverSingleton.GetSignleton().m_Driver.GetUserName());
             } catch (JSONException e) {
-                //Toast.makeText(getContext(), "JSON OBJECT ERROR", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
             }
 
@@ -139,7 +134,6 @@ public class HomeFragment<OnPause> extends Fragment {
                                 }
                             } catch (JSONException e) {
                                 Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                                //Toast.makeText(getContext(), "retrieve JSON OBJECT ERROR", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -150,7 +144,6 @@ public class HomeFragment<OnPause> extends Fragment {
                             // TODO: Handle error
                             Toast.makeText(getContext(),error.toString(), Toast.LENGTH_SHORT).show();
 
-                            //Toast.makeText(getContext(), "JSON Request ERROR", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -201,7 +194,6 @@ public class HomeFragment<OnPause> extends Fragment {
                                 }
                             } catch (JSONException e) {
                                 Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
-                                //Toast.makeText(getContext(), "retrieve JSON OBJECT ERROR", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -211,17 +203,14 @@ public class HomeFragment<OnPause> extends Fragment {
                         public void onErrorResponse(VolleyError error) {
                             // TODO: Handle error
                             Toast.makeText(getContext(),error.toString(), Toast.LENGTH_SHORT).show();
-
-                            //Toast.makeText(getContext(), "JSON Request ERROR", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
-
           //   */
 
         SingletonRequestQueue.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
 
-
+        // More offline testing code
         /*
         if (viewManager.getUserType() == UserType.DRIVER)
             vehicleList = DriverSingleton.GetSignleton().m_Driver.m_VehiclList;
@@ -240,26 +229,17 @@ public class HomeFragment<OnPause> extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         listView = (ListView) getView().findViewById(R.id.homeListView);
-
-
 
         if (viewManager.getUserType() == UserType.DRIVER) {
             dAdapter = new DriverListAdapter(getContext(), R.layout.driver_list_view, vehicleList);
             listView.setAdapter(dAdapter);
-            //Toast.makeText(getContext(), "stationlistview entered", Toast.LENGTH_SHORT).show();
         }
         else {
             vAdapter = new VendorListAdapter(getContext(), R.layout.station_list_view, stationList);
             listView.setAdapter(vAdapter);
         }
-
-
          //*/
-
-
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -289,12 +269,10 @@ public class HomeFragment<OnPause> extends Fragment {
             MainActivity.isNavBarShown = true;
         }
 
-
-
-
+        // set action bar title to dashboard
         main.getSupportActionBar().setTitle("Dashboard");
+        // More bottom navigation logic
         MainActivity.currentView = CurrentView.HOME;
-
         if (MainActivity.toView == ToView.FINDROUTE)
             Navigation.findNavController(getView()).navigate(HomeFragmentDirections.actionHomeFragmentToFindRouteFragment());
 
